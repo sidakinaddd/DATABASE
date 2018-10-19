@@ -1,0 +1,84 @@
+/* Delete the tables if they already exist */
+drop table if exists Movie;
+drop table if exists Reviewer;
+drop table if exists Rating;
+
+/* Create the schema for our tables */
+create table Movie(mID int, title text, year int, director text);
+create table Reviewer(rID int, name text);
+create table Rating(rID int, mID int, stars int, ratingDate date);
+
+/* Populate the tables with our data */
+insert into Movie values(101, 'Gone with the Wind', 1939, 'Victor Fleming');
+insert into Movie values(102, 'Star Wars', 1977, 'George Lucas');
+insert into Movie values(103, 'The Sound of Music', 1965, 'Robert Wise');
+insert into Movie values(104, 'E.T.', 1982, 'Steven Spielberg');
+insert into Movie values(105, 'Titanic', 1997, 'James Cameron');
+insert into Movie values(106, 'Snow White', 1937, null);
+insert into Movie values(107, 'Avatar', 2009, 'James Cameron');
+insert into Movie values(108, 'Raiders of the Lost Ark', 1981, 'Steven Spielberg');
+
+insert into Reviewer values(201, 'Sarah Martinez');
+insert into Reviewer values(202, 'Daniel Lewis');
+insert into Reviewer values(203, 'Brittany Harris');
+insert into Reviewer values(204, 'Mike Anderson');
+insert into Reviewer values(205, 'Chris Jackson');
+insert into Reviewer values(206, 'Elizabeth Thomas');
+insert into Reviewer values(207, 'James Cameron');
+insert into Reviewer values(208, 'Ashley White');
+
+insert into Rating values(201, 101, 2, '2011-01-22');
+insert into Rating values(201, 101, 4, '2011-01-27');
+insert into Rating values(202, 106, 4, null);
+insert into Rating values(203, 103, 2, '2011-01-20');
+insert into Rating values(203, 108, 4, '2011-01-12');
+insert into Rating values(203, 108, 2, '2011-01-30');
+insert into Rating values(204, 101, 3, '2011-01-09');
+insert into Rating values(205, 103, 3, '2011-01-27');
+insert into Rating values(205, 104, 2, '2011-01-22');
+insert into Rating values(205, 108, 4, null);
+insert into Rating values(206, 107, 3, '2011-01-15');
+insert into Rating values(206, 106, 5, '2011-01-19');
+insert into Rating values(207, 107, 5, '2011-01-20');
+insert into Rating values(208, 104, 3, '2011-01-02');
+ALTER TABLE Movie ADD CONSTRAINT movie_id primary key(mID);
+ALTER table Reviewer ADD constraint rid_pk primary key (rID);
+ALTER table Movie Add constraint  ty_uniqe UNIQUE (title,year);
+ALTER table Rating Add constraint rmr_unique UNIQUE (rId,mID,ratingDate);
+ALTER table Reviewer Add constraint  name_not check (name is NOT NULL );
+ALTER  table Rating add constraint  stars_not check (stars is NOT NULL );
+ALTER table Movie add constraint  year_not check (year>1900);
+ALTER table Rating add constraint  star_not check (stars IN(1,2,3,4,5));
+alter  table Rating add constraint rating_not check(ratingDate>'31-12-1999');
+alter table Movie add constraint tdfj check((director='Steven Spielberg' AND year<=1990) or (director='James Cameron' and year>=1990) or director NOT IN('Steven Spielberg','James Cameron'));
+UPDATE Movie set mID=mID+1;
+select * from Movie;
+insert into Movie values (109,'Titanic',1997,'JC');
+insert  into Reviewer values (201,'Ted Codd');
+UPDATE Rating set rID=205,mID=104;
+insert into Reviewer values (109,null);
+update Rating set stars=NULL where rID=208;
+update Movie set year=year-40;
+update Rating set stars=stars+1;
+insert into Rating values (201,101,1,'1999-01-01');
+insert into Movie values (109,'Jurassic Park',1993,'Steven Spielberg');
+update  Movie set year=year-10 where title ='Titanic';
+insert into Movie values (109,'Titanic',2001,null);
+update Rating set mID=109;
+select * from Rating;
+select* from Movie;
+update Movie set year=1901 where director NOT in('James Cameron');
+update Rating set stars=stars-1;
+Alter table Rating ADD foreign key (rID) REFERENCES Reviewer(rID) ON UPDATE  cascade on delete set null;
+Alter table Rating add foreign key(mID) REFERENCES Movie(mID) ON DELETE cascade ;
+INSERT into Rating values(209,109,3,'2001-01-01');
+UPDATE Rating set rID =2-9 where rID=208;
+Update rating set mID=mID+1;
+UPDATE Movie set mID=109 where mID=108;
+UPDATE Movie set mID=110 where mID=105;
+UPDATE  Reviewer set rID=rID+10;
+DELETE  FROM  Reviewer where rID>215;
+DELETE  FROM Movie where mID<105;
+SELECT sum(rID) FROM  Rating where rID is not null;
+SELECT  count(*) FROM Rating where rID is null ;
+select * from Rating;
